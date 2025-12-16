@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:layout_margin="2dp"
+        android:background="@color/grey">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:padding="3dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:contentDescription="Country Flag">
+
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_countryName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country Name"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:contentDescription="Country Name"/>
+
+            <TextView
+                android:id="@+id/tv_countryRegion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country Region"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:contentDescription="Country Region">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
