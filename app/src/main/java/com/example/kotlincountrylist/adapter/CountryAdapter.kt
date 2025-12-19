@@ -1,40 +1,36 @@
 package com.example.kotlincountrylist.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlincountrylist.databinding.ItemCountryRvRowBinding
 import com.example.kotlincountrylist.model.Country
-import com.example.kotlincountrylist.util.getImageFromURL
-import com.example.kotlincountrylist.util.placeholderProgressBar
 import com.example.kotlincountrylist.view.FeedFragmentDirections
 
 class CountryAdapter(
     val countryList: ArrayList<Country>
-): RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
+): RecyclerView.Adapter<CountryAdapter.CountryViewHolder>(), CountryClickListener {
 
     class CountryViewHolder(
         val binding: ItemCountryRvRowBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-    }
+    ) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): CountryViewHolder {
-        /*val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_country_rv_row, parent, false)
-        return CountryViewHolder(view)
-
-         */
-        val binding = ItemCountryRvRowBinding.inflate(
-            LayoutInflater.from(parent.context
-            ),
-            parent,
-            false
-        )
+        val inflater = LayoutInflater.from(parent.context)
+        val binding =
+            DataBindingUtil.inflate<ItemCountryRvRowBinding>(
+                inflater,
+                com.example.kotlincountrylist.R.layout.item_country_rv_row,
+                parent,
+                false
+            )
         return CountryViewHolder(binding)
     }
 
@@ -42,7 +38,10 @@ class CountryAdapter(
         holder: CountryViewHolder,
         position: Int
     ) {
-        holder.binding.tvCountryName.text = countryList[position].countryName
+        holder.binding.country = countryList[position]
+        holder.binding.listener = this
+
+        /*holder.binding.tvCountryName.text = countryList[position].countryName
         holder.binding.tvCountryRegion.text = countryList[position].countryRegion
 
         holder.itemView.setOnClickListener {
@@ -55,15 +54,22 @@ class CountryAdapter(
             countryList[position].countryFlagUrl,
             placeholderProgressBar(holder.itemView.context)
         )
+         */
     }
 
     override fun getItemCount(): Int {
         return countryList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateCountryList(newCountryList: List<Country>) {
         countryList.clear()
         countryList.addAll(newCountryList)
         notifyDataSetChanged()
+    }
+
+    override fun onCountryClicked(v: View,uuid:Int) {
+        val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment(uuid)
+        v.findNavController().navigate(action)
     }
 }

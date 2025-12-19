@@ -1,4 +1,4 @@
-package com.example.kotlincountrylist.service
+package com.example.kotlincountrylist.service.remote
 
 import com.example.kotlincountrylist.model.Country
 import io.reactivex.rxjava3.core.Single

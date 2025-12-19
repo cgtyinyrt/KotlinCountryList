@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     id("androidx.navigation.safeargs.kotlin") version "2.9.6"
+    id ("kotlin-kapt")
 }
 
 android {

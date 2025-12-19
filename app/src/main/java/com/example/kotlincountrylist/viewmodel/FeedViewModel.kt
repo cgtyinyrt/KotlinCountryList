@@ -4,8 +4,8 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.kotlincountrylist.model.Country
-import com.example.kotlincountrylist.service.CountryAPIService
-import com.example.kotlincountrylist.service.CountryDatabase
+import com.example.kotlincountrylist.service.remote.CountryAPIService
+import com.example.kotlincountrylist.service.local.CountryDatabase
 import com.example.kotlincountrylist.util.CustomSharedPreferences
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -27,7 +27,7 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
     fun refreshData() {
 
         val updateTime = customPreferences.getTime()
-        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+        if (updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             getDataFromSQLite()
         } else {
             getDataFromAPI()
@@ -50,7 +50,6 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
                         storeInSQLite(t)
                         Toast.makeText(getApplication(), "Countries from API", Toast.LENGTH_LONG).show()
                     }
-
                     override fun onError(e: Throwable) {
                         countryLoading.value = false
                         countryError.value = true

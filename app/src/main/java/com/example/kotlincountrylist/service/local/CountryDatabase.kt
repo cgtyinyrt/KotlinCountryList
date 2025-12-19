@@ -1,4 +1,4 @@
-package com.example.kotlincountrylist.service
+package com.example.kotlincountrylist.service.local
 
 import android.content.Context
 import androidx.room.Database
@@ -44,7 +44,6 @@ abstract class CountryDatabase : RoomDatabase() {
                 instance
             }
         }
-
          */
     }
 }

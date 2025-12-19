@@ -11,9 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.kotlincountrylist.R
 import com.example.kotlincountrylist.databinding.FragmentCountryBinding
-import com.example.kotlincountrylist.model.Country
-import com.example.kotlincountrylist.util.getImageFromURL
-import com.example.kotlincountrylist.util.placeholderProgressBar
 import com.example.kotlincountrylist.viewmodel.CountryViewModel
 
 class CountryFragment : Fragment() {
@@ -74,16 +71,18 @@ class CountryFragment : Fragment() {
     private fun observeLiveData() {
         viewModel.countryLiveData.observe(viewLifecycleOwner) { country ->
             country?.let {
-                binding.tvCountryName.text = country.countryName
-                binding.tvCountryCapital.text = country.countryCapital
-                binding.tvCountryRegion.text = country.countryRegion
-                binding.tvCountryCurrency.text = country.countryCurrency
-                binding.tvCountryLanguage.text = country.countryLanguage
-                context?.let {
-                    binding.ivCountryFlagImage.getImageFromURL(country.countryFlagUrl,
-                        placeholderProgressBar(it)
-                    )
-                }
+                binding.selectedCountry = country
+
+//                binding.tvCountryName.text = country.countryName
+//                binding.tvCountryCapital.text = country.countryCapital
+//                binding.tvCountryRegion.text = country.countryRegion
+//                binding.tvCountryCurrency.text = country.countryCurrency
+//                binding.tvCountryLanguage.text = country.countryLanguage
+//                context?.let {
+//                    binding.ivCountryFlagImage.getImageFromURL(country.countryFlagUrl,
+//                        placeholderProgressBar(it)
+//                    )
+//                }
             }
         }
     }

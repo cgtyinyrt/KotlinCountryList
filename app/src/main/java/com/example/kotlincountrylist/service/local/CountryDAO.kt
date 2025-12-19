@@ -1,4 +1,4 @@
-package com.example.kotlincountrylist.service
+package com.example.kotlincountrylist.service.local
 
 import androidx.room.Dao
 import androidx.room.Insert

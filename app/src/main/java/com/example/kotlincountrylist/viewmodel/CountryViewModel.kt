@@ -3,7 +3,7 @@ package com.example.kotlincountrylist.viewmodel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.example.kotlincountrylist.model.Country
-import com.example.kotlincountrylist.service.CountryDatabase
+import com.example.kotlincountrylist.service.local.CountryDatabase
 import kotlinx.coroutines.launch
 
 class CountryViewModel(application: Application) : BaseViewModel(application) {
