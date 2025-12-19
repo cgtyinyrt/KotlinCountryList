@@ -12,13 +12,15 @@ import androidx.navigation.findNavController
 import com.example.kotlincountrylist.R
 import com.example.kotlincountrylist.databinding.FragmentCountryBinding
 import com.example.kotlincountrylist.model.Country
+import com.example.kotlincountrylist.util.getImageFromURL
+import com.example.kotlincountrylist.util.placeholderProgressBar
 import com.example.kotlincountrylist.viewmodel.CountryViewModel
 
 class CountryFragment : Fragment() {
 
     private lateinit var binding: FragmentCountryBinding
     private lateinit var viewModel: CountryViewModel
-    //private var countryUuid = 0
+    private var countryUuid = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +54,12 @@ class CountryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*arguments?.let {
+        arguments?.let {
             countryUuid = CountryFragmentArgs.fromBundle(it).countryUuid
         }
 
-         */
-
         viewModel = ViewModelProvider(this)[CountryViewModel::class.java]
-        viewModel.getDataFromRoom()
+        viewModel.getDataFromRoom(countryUuid)
 
         observeLiveData()
 
@@ -79,6 +79,11 @@ class CountryFragment : Fragment() {
                 binding.tvCountryRegion.text = country.countryRegion
                 binding.tvCountryCurrency.text = country.countryCurrency
                 binding.tvCountryLanguage.text = country.countryLanguage
+                context?.let {
+                    binding.ivCountryFlagImage.getImageFromURL(country.countryFlagUrl,
+                        placeholderProgressBar(it)
+                    )
+                }
             }
         }
     }

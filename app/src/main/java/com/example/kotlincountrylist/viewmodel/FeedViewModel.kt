@@ -1,10 +1,12 @@
 package com.example.kotlincountrylist.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.kotlincountrylist.model.Country
 import com.example.kotlincountrylist.service.CountryAPIService
 import com.example.kotlincountrylist.service.CountryDatabase
+import com.example.kotlincountrylist.util.CustomSharedPreferences
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
@@ -15,12 +17,24 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
 
     private val countryApiService = CountryAPIService()
     private val disposable = CompositeDisposable()
+    private val customPreferences = CustomSharedPreferences(getApplication())
 
     val countries = MutableLiveData<List<Country>> ()
     val countryError = MutableLiveData<Boolean>()
     val countryLoading = MutableLiveData<Boolean>()
+    private var refreshTime = 10 * 60 * 1000 * 1000 * 1000L
 
     fun refreshData() {
+
+        val updateTime = customPreferences.getTime()
+        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+            getDataFromSQLite()
+        } else {
+            getDataFromAPI()
+        }
+    }
+
+    fun refreshFromAPI() {
         getDataFromAPI()
     }
 
@@ -34,6 +48,7 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<List<Country>>() {
                     override fun onSuccess(t: List<Country>) {
                         storeInSQLite(t)
+                        Toast.makeText(getApplication(), "Countries from API", Toast.LENGTH_LONG).show()
                     }
 
                     override fun onError(e: Throwable) {
@@ -43,6 +58,15 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
                     }
                 })
         )
+    }
+
+    private fun getDataFromSQLite() {
+        countryLoading.value = true
+        launch {
+            val countries = CountryDatabase(getApplication()).countryDAO().getAllCountries()
+            showCountries(countries)
+            Toast.makeText(getApplication(), "Countries from SQLite", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun showCountries(countryList: List<Country>) {
@@ -64,5 +88,11 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
             }
             showCountries(countryList)
         }
+        customPreferences.saveTime(System.nanoTime())
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }

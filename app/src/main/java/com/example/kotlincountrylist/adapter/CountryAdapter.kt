@@ -46,7 +46,8 @@ class CountryAdapter(
         holder.binding.tvCountryRegion.text = countryList[position].countryRegion
 
         holder.itemView.setOnClickListener {
-            val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment()
+            val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment(countryList[position].uuid)
+            //action.countryUuid = countryList[position].uuid
             holder.itemView.findNavController().navigate(action)
         }
 

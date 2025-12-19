@@ -55,7 +55,7 @@ class FeedFragment : Fragment() {
             binding.rvCountryList.visibility = View.GONE
             binding.tvCountryError.visibility = View.GONE
             binding.countryLoadingProgressBar.visibility = View.VISIBLE
-            viewModel.refreshData()
+            viewModel.refreshFromAPI()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
